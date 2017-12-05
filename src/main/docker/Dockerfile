@@ -23,7 +23,8 @@ RUN zypper -n refresh && \
 # Add scripts to be executed during startup
 COPY startup /startup
 ADD https://raw.githubusercontent.com/CAFapi/caf-common/v1.14.0/container-cert-script/install-ca-cert.sh \
-    https://raw.githubusercontent.com/CAFapi/caf-common/v1.14.0/container-cert-script/install-ca-cert-java.sh \
+    /startup/startup.d/install-ca-cert-base.sh
+ADD https://raw.githubusercontent.com/CAFapi/caf-common/v1.14.0/container-cert-script/install-ca-cert-java.sh \
     /startup/startup.d/
 RUN chmod +x /startup/* /startup/startup.d/*
 

@@ -24,8 +24,6 @@ RUN zypper -n refresh && \
 COPY startup /startup
 ADD https://raw.githubusercontent.com/CAFapi/caf-common/v1.14.0/container-cert-script/install-ca-cert.sh \
     /startup/startup.d/install-ca-cert-base.sh
-ADD https://raw.githubusercontent.com/CAFapi/caf-common/v1.14.0/container-cert-script/install-ca-cert-java.sh \
-    /startup/startup.d/
 RUN chmod +x /startup/* /startup/startup.d/*
 
 # Add Tini

@@ -18,7 +18,8 @@ FROM opensuse:latest
 
 # Update the OS packages
 RUN zypper -n refresh && \
-    zypper -n update
+    zypper -n update && \
+    zypper -n install curl
 
 # Add scripts to be executed during startup
 COPY startup /startup

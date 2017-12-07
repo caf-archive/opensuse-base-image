@@ -16,7 +16,7 @@
 
 FROM opensuse:latest
 
-# Update the OS packages
+# Update the OS packages and install cURL
 RUN zypper -n refresh && \
     zypper -n update && \
     zypper -n install curl

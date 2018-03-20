@@ -19,7 +19,7 @@ FROM opensuse:latest
 # Update the OS packages and install cURL
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install curl
+    zypper -n install curl postgresql
 
 # Add scripts to be executed during startup
 COPY startup /startup

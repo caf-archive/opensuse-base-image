@@ -28,7 +28,7 @@
 #CAF_DATABASE_PASSWORD=
 #CAF_DATABASE_PORT=
 #CAF_DATABASE_USERNAME=
-#ENV_PREFIX="CAF_"
+ENV_PREFIX="CAF_"
 
 tmpDir="/tmp"
 scriptName=$(basename "$0")
@@ -42,8 +42,8 @@ tmpErr=$tmpDir/$baseName"-stderr"
 #fi
 
 # Need to convert prefixed variables to known values:
-varName="$ENV_PREFIX"DATABASE
-database=$(echo ${!varName})
+varName="$ENV_PREFIX"DATABASE_NAME
+database_name=$(echo ${!varName})
 
 # Or like this:
 #database=$(eval echo \$$(echo $env_prefix"_DATABASE"))
@@ -78,8 +78,8 @@ function check_psql {
 function check_variables {
   local -i missingVar=0
 
-  if [ -z $database ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE")
+  if [ -z $database_name ] ; then
+    echo "Missing "$(echo $ENV_PREFIX"DATABASE_NAME")
     missingVar+=1
   fi
 
@@ -120,10 +120,10 @@ function check_db_exist {
    --host="$datasource_host" \
    --port="$datasource_port" \
    --tuples-only \
-   --command="SELECT 1 FROM pg_database WHERE datname = '$database'" \
+   --command="SELECT 1 FROM pg_database WHERE datname = '$database_name'" \
    2>$tmpErr | grep -q 1 \
  ; then
-   echo "Database [$database] exists."
+   echo "Database [$database_name] exists."
    exit 0
  else
    if [ -f "$tmpErr" ] && [ -s "$tmpErr" ] ; then
@@ -131,7 +131,7 @@ function check_db_exist {
      cat "$tmpErr"
      exit 1
    else
-     echo "Database [$database] does not exist, creating..."
+     echo "Database [$database_name] does not exist, creating..."
      create_db
    fi
  fi
@@ -145,10 +145,10 @@ function create_db {
    psql --username="$datasource_user" \
    --host="$datasource_host" \
    --port="$datasource_port" \
-   --command="CREATE DATABASE \"$database\"" \
+   --command="CREATE DATABASE \"$database_name\"" \
    >/dev/null 2>$tmpErr \
   ; then
-    echo "Database [$database] created."
+    echo "Database [$database_name] created."
   else
      echo "Database creation error, exiting."
      cat "$tmpErr"

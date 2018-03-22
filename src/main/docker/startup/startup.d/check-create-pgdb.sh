@@ -23,12 +23,12 @@
 #
 # ----------Variable Section-----------#
 #Dummy values (come from environment vars)
-#CAF_DATABASE=
+#CAF_DATABASE_NAME=
 #CAF_DATABASE_HOST=
 #CAF_DATABASE_PASSWORD=
 #CAF_DATABASE_PORT=
 #CAF_DATABASE_USERNAME=
-ENV_PREFIX="CAF_"
+#ENV_PREFIX="CAF_"
 
 tmpDir="/tmp"
 scriptName=$(basename "$0")
@@ -37,16 +37,13 @@ tmpErr=$tmpDir/$baseName"-stderr"
 
 # Should arrive from environment definition.
 # All database related variables will begin with it
-#if [ -z $ENV_PREFIX ] ; then
-#  ENV_PREFIX="CAF_"
-#fi
+if [ -z $ENV_PREFIX ] ; then
+  ENV_PREFIX="CAF_"
+fi
 
 # Need to convert prefixed variables to known values:
 varName="$ENV_PREFIX"DATABASE_NAME
 database_name=$(echo ${!varName})
-
-# Or like this:
-#database=$(eval echo \$$(echo $env_prefix"_DATABASE"))
 
 varName="$ENV_PREFIX"DATABASE_HOST
 datasource_host=$(echo ${!varName})
@@ -79,33 +76,39 @@ function check_variables {
   local -i missingVar=0
 
   if [ -z $database_name ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_NAME")
+    echo "Missing "$(echo $ENV_PREFIX"DATABASE_NAME") >>/tmp/msgs.txt
     missingVar+=1
   fi
 
   if [ -z $datasource_host ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_HOST")
+    echo "Missing "$(echo $ENV_PREFIX"DATABASE_HOST") >>/tmp/msgs.txt
     missingVar+=1
   fi
 
   if [ -z $datasource_port ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_PORT")
+    echo "Missing "$(echo $ENV_PREFIX"DATABASE_PORT") >>/tmp/msgs.txt
     missingVar+=1
   fi
 
   if [ -z $datasource_user ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_USERNAME")
+    echo "Missing "$(echo $ENV_PREFIX"DATABASE_USERNAME") >>/tmp/msgs.txt
     missingVar+=1
   fi
 
   if [ -z $datasource_password ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_PASSWORD")
+    echo "Missing "$(echo $ENV_PREFIX"DATABASE_PASSWORD") >>/tmp/msgs.txt
     missingVar+=1
+  fi
+  
+  if [ $missingVar -eq 5 ] ; then
+    echo "INFO: No variables defined, assuming that database creation is not required, exiting."
+    exit 1
   fi
 
   if [ $missingVar -gt 0 ] ; then
-    echo "Not all required variables defined, exiting."
-    echo "HINT: If the ENV_PREFIX variable is provided, expected database parameters will be constructed with it."
+    echo "WARNING: Not all required variables for database creation have been defined, exiting."
+	cat /tmp/msgs.txt
+	rm /tmp/msgs.txt
     exit 1
   fi
 }

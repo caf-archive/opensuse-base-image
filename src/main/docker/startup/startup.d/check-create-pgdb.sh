@@ -62,13 +62,13 @@ function check_psql {
   if [ $(type -p psql) ]; then
       _psql=$(type -p psql)
   else
-      echo "Install psql (to the system path) before this script can be used."
+      echo "WARN: Install psql (to the system path) before this script can be used."
       exit 1
   fi
 
   if [[ "$_psql" ]]; then
     version=$("$_psql" --version 2>&1 | awk '{print $3}')
-    echo "psql $version found, OK to continue"
+    echo "INFO: psql $version found, OK to continue"
   fi
 }
 
@@ -76,39 +76,38 @@ function check_variables {
   local -i missingVar=0
 
   if [ -z $database_name ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_NAME") >>/tmp/msgs.txt
+    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_NAME")" not defined"
     missingVar+=1
   fi
 
   if [ -z $datasource_host ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_HOST") >>/tmp/msgs.txt
+    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_HOST")" not defined"
     missingVar+=1
   fi
 
   if [ -z $datasource_port ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_PORT") >>/tmp/msgs.txt
+    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_PORT")" not defined"
     missingVar+=1
   fi
 
   if [ -z $datasource_user ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_USERNAME") >>/tmp/msgs.txt
+    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_USERNAME")" not defined"
     missingVar+=1
   fi
 
   if [ -z $datasource_password ] ; then
-    echo "Missing "$(echo $ENV_PREFIX"DATABASE_PASSWORD") >>/tmp/msgs.txt
+    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_PASSWORD")" not defined"
     missingVar+=1
   fi
-  
+
   if [ $missingVar -eq 5 ] ; then
     echo "INFO: No variables defined, assuming that database creation is not required, exiting."
-    exit 1
+    echo "HINT: If the ENV_PREFIX variable is provided, expected database parameters will be constructed with it."
+    exit 0
   fi
 
   if [ $missingVar -gt 0 ] ; then
-    echo "WARNING: Not all required variables for database creation have been defined, exiting."
-	cat /tmp/msgs.txt
-	rm /tmp/msgs.txt
+    echo "WARN: Not all required variables for database creation have been defined, exiting."
     exit 1
   fi
 }

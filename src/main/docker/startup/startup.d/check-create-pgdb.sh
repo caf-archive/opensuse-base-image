@@ -113,7 +113,7 @@ function check_variables {
 }
 
 function check_db_exist {
-  echo "Checking database existence..."
+  echo "INFO: Checking database existence..."
 
 # Need to set password for run
 # Sending psql errors to file, using quiet grep to search for valid result
@@ -125,15 +125,15 @@ function check_db_exist {
    --command="SELECT 1 FROM pg_database WHERE datname = '$database_name'" \
    2>$tmpErr | grep -q 1 \
  ; then
-   echo "Database [$database_name] exists."
+   echo "WARN: Database [$database_name] exists."
    exit 0
  else
    if [ -f "$tmpErr" ] && [ -s "$tmpErr" ] ; then
-     echo "Database connection error, exiting."
+     echo "ERROR: Database connection error, exiting."
      cat "$tmpErr"
      exit 1
    else
-     echo "Database [$database_name] does not exist, creating..."
+     echo "INFO: Database [$database_name] does not exist, creating..."
      create_db
    fi
  fi
@@ -150,9 +150,9 @@ function create_db {
    --command="CREATE DATABASE \"$database_name\"" \
    >/dev/null 2>$tmpErr \
   ; then
-    echo "Database [$database_name] created."
+    echo "INFO: Database [$database_name] created."
   else
-     echo "Database creation error, exiting."
+     echo "ERROR: Database creation error, exiting."
      cat "$tmpErr"
      exit 1
   fi

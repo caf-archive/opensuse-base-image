@@ -17,13 +17,13 @@ The `check-create-pgdb.sh` script is provided in the `/startup/startup.d/` direc
 The database details are configured by passing the following environment variables to the container:
 
 | **Environment Variable** |                                                       **Description**                                                      |
-|:----------------------:|:------------------------------------------------------------------------------------------------------------------------:|
+|----------------------|------------------------------------------------------------------------------------------------------------------------|
 | CAF_DATABASE_NAME      | The name of the PostgreSQL database to be created.                                                                       |
 | CAF_DATABASE_HOST      | The host of the PostgreSQL instance where the database is to be created.                                                 |
 | CAF_DATABASE_PORT      | The port of the PostgreSQL instance where the database is to be created.                                                 |
 | CAF_DATABASE_USERNAME  | The PostgreSQL username to be used when creating the database.                                                           |
 | CAF_DATABASE_PASSWORD  | The PostgreSQL password to be used when creating the database.                                                           |
-| ENV_PREFIX             | This variable defines a custom prefix that can be added to each of the above variable names instead of the default `CAF` |
+| ENV_PREFIX             | This variable defines a custom prefix that can be added to each of the above variable names instead of the default `CAF_` |
 
 **Note:** If you do not wish to utilise the create database functionality do not provide any of the listed Environment Variables and the script will not attempt to create a database.
 

@@ -23,12 +23,12 @@
 #
 # ----------Variable Section-----------#
 #Dummy values (come from environment vars)
-#CAF_DATABASE_NAME=
-#CAF_DATABASE_HOST=
-#CAF_DATABASE_PASSWORD=
-#CAF_DATABASE_PORT=
-#CAF_DATABASE_USERNAME=
-#ENV_PREFIX="CAF_"
+#DATABASE_NAME=
+#DATABASE_HOST=
+#DATABASE_PASSWORD=
+#DATABASE_PORT=
+#DATABASE_USERNAME=
+#ENV_PREFIX=""
 
 tmpDir="/tmp"
 scriptName=$(basename "$0")
@@ -38,7 +38,7 @@ tmpErr=$tmpDir/$baseName"-stderr"
 # Should arrive from environment definition.
 # All database related variables will begin with it
 if [ -z $ENV_PREFIX ] ; then
-  ENV_PREFIX="CAF_"
+  ENV_PREFIX=""
 fi
 
 # Need to convert prefixed variables to known values:

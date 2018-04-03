@@ -28,18 +28,20 @@
 #DATABASE_PASSWORD=
 #DATABASE_PORT=
 #DATABASE_USERNAME=
-#ENV_PREFIX=""
 
 tmpDir="/tmp"
 scriptName=$(basename "$0")
 baseName="${scriptName%.*}"
 tmpErr=$tmpDir/$baseName"-stderr"
 
-# Should arrive from environment definition.
-# All database related variables will begin with it
-if [ -z $ENV_PREFIX ] ; then
-  ENV_PREFIX=""
+# Check that the environment variable prefix to use has been passed
+if [ $# -ne 1 ]; then
+  echo "ERROR: Incorrect number of arguments specified"
+  echo "Usage: $scriptName environment_variable_prefix"
+  exit 1
 fi
+
+ENV_PREFIX=$1
 
 # Need to convert prefixed variables to known values:
 varName="$ENV_PREFIX"DATABASE_NAME
@@ -76,38 +78,32 @@ function check_variables {
   local -i missingVar=0
 
   if [ -z $database_name ] ; then
-    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_NAME")" not defined"
+    echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_NAME")" not defined"
     missingVar+=1
   fi
 
   if [ -z $datasource_host ] ; then
-    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_HOST")" not defined"
+    echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_HOST")" not defined"
     missingVar+=1
   fi
 
   if [ -z $datasource_port ] ; then
-    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_PORT")" not defined"
+    echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_PORT")" not defined"
     missingVar+=1
   fi
 
   if [ -z $datasource_user ] ; then
-    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_USERNAME")" not defined"
+    echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_USERNAME")" not defined"
     missingVar+=1
   fi
 
   if [ -z $datasource_password ] ; then
-    echo "INFO: Optional variable "$(echo $ENV_PREFIX"DATABASE_PASSWORD")" not defined"
+    echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_PASSWORD")" not defined"
     missingVar+=1
   fi
 
-  if [ $missingVar -eq 5 ] ; then
-    echo "INFO: No variables defined, assuming that database creation is not required, exiting."
-    echo "HINT: If the ENV_PREFIX variable is provided, expected database parameters will be constructed with it."
-    exit 0
-  fi
-
   if [ $missingVar -gt 0 ] ; then
-    echo "WARN: Not all required variables for database creation have been defined, exiting."
+    echo "ERROR: Not all required variables for database creation have been defined, exiting."
     exit 1
   fi
 }

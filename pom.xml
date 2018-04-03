@@ -27,7 +27,7 @@
     <packaging>pom</packaging>
 
     <name>openSUSE Base image</name>
-    <description>An openSUSE-based image which includes Tini, cURL and PostgreSQL Client.</description>
+    <description>An openSUSE-based image with additional facilities useful for hosting services.</description>
     <url>https://github.com/CAFapi/opensuse-base-image</url>
 
     <parent>

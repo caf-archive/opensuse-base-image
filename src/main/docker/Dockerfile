@@ -33,6 +33,10 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
 
+# Add other useful scripts
+COPY scripts /scripts
+RUN chmod +x /scripts/*
+
 # Tag the image
 ARG BUILD_NUMBER
 ARG BUILD_DATE

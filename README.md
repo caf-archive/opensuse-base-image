@@ -1,6 +1,6 @@
-# openSUSE and Tini image
+# openSUSE Base image
 
-This project builds an openSUSE-based image which includes Tini. It can be used as a base image by projects which require Tini.
+This project builds an openSUSE-based image intended for use as a general service base image.
 
 ### Tini
 [Tini](https://github.com/krallin/tini) is pre-installed in the container.  If the image entrypoint is not overwritten then it will be automatically used.

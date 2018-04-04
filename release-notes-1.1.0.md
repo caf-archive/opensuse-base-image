@@ -9,8 +9,8 @@ ${version-number}
  - PostgreSQL Client pre-installed  
     The PostgreSQL Client, `psql`, is now pre-installed.
 
- - The `check-create-pgdb.sh` script has been added to the startup.d folder  
-    This script enables consumers of this image to define a PostgreSQL database that will be created when the container starts up.
+ - Database creation script pre-installed  
+    A utility script has been added which a consuming service may use to create a PostgreSQL database if it has not already been created.
 
 #### Known Issues
  - None

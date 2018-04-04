@@ -19,7 +19,7 @@ FROM opensuse:latest
 # Update the OS packages and install cURL
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install curl
+    zypper -n install curl postgresql
 
 # Add scripts to be executed during startup
 COPY startup /startup
@@ -32,6 +32,10 @@ ENV TINI_VERSION v0.16.1
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
+
+# Add other useful scripts
+COPY scripts /scripts
+RUN chmod +x /scripts/*
 
 # Tag the image
 ARG BUILD_NUMBER

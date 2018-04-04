@@ -129,7 +129,7 @@ function check_db_exist {
    --command="SELECT 1 FROM pg_database WHERE datname = '$database_name'" \
    2>$tmpErr | grep -q 1 \
  ; then
-   echo "WARN: Database [$database_name] exists."
+   echo "INFO: Database [$database_name] already exists."
    exit 0
  else
    if [ -f "$tmpErr" ] && [ -s "$tmpErr" ] ; then

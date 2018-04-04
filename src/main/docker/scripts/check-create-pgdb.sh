@@ -59,6 +59,9 @@ datasource_user=$(echo ${!varName})
 varName="$ENV_PREFIX"DATABASE_PASSWORD
 datasource_password=$(echo ${!varName})
 
+varName="$ENV_PREFIX"DATABASE_APPNAME
+datasource_appname=$(echo ${!varName})
+
 # ----------Function Section-----------#
 function check_psql {
   if [ $(type -p psql) ]; then
@@ -102,6 +105,11 @@ function check_variables {
     missingVar+=1
   fi
 
+  if [ -z "$datasource_appname" ] ; then
+    echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_APPNAME")" not defined"
+    missingVar+=1
+  fi
+
   if [ $missingVar -gt 0 ] ; then
     echo "ERROR: Not all required variables for database creation have been defined, exiting."
     exit 1
@@ -114,7 +122,7 @@ function check_db_exist {
 # Need to set password for run
 # Sending psql errors to file, using quiet grep to search for valid result
  if  PGPASSWORD="$datasource_password" \
-   psql --username="$datasource_user" \
+   PGAPPNAME="$datasource_appname" psql --username="$datasource_user" \
    --host="$datasource_host" \
    --port="$datasource_port" \
    --tuples-only \
@@ -140,7 +148,7 @@ function create_db {
 # Sending psql errors to file, stdout to NULL
 # postgres will auto-lowercase database names unless they are quoted
   if  PGPASSWORD="$datasource_password" \
-   psql --username="$datasource_user" \
+   PGAPPNAME="$datasource_appname" psql --username="$datasource_user" \
    --host="$datasource_host" \
    --port="$datasource_port" \
    --command="CREATE DATABASE \"$database_name\"" \

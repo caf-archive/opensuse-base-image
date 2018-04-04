@@ -125,10 +125,12 @@ function check_db_exist {
    PGAPPNAME="$datasource_appname" psql --username="$datasource_user" \
    --host="$datasource_host" \
    --port="$datasource_port" \
+   --variable database_name="$database_name" \
    --tuples-only \
-   --command="SELECT 1 FROM pg_database WHERE datname = '$database_name'" \
-   2>$tmpErr | grep -q 1 \
- ; then
+   2>$tmpErr <<EOF | grep -q 1
+SELECT 1 FROM pg_database WHERE datname = :'database_name';
+EOF
+ then
    echo "INFO: Database [$database_name] already exists."
    exit 0
  else
@@ -151,9 +153,11 @@ function create_db {
    PGAPPNAME="$datasource_appname" psql --username="$datasource_user" \
    --host="$datasource_host" \
    --port="$datasource_port" \
-   --command="CREATE DATABASE \"$database_name\"" \
-   >/dev/null 2>$tmpErr \
-  ; then
+   --variable database_name="$database_name" \
+   >/dev/null 2>$tmpErr <<EOF
+CREATE DATABASE :"database_name";
+EOF
+  then
     echo "INFO: Database [$database_name] created."
   else
      echo "ERROR: Database creation error, exiting."

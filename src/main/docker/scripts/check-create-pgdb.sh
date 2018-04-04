@@ -28,6 +28,7 @@
 #DATABASE_PASSWORD=
 #DATABASE_PORT=
 #DATABASE_USERNAME=
+#DATABASE_APPNAME=
 
 tmpDir="/tmp"
 scriptName=$(basename "$0")

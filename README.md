@@ -16,19 +16,21 @@ Any executable scripts added to the `/startup/startup.d/` directory will be auto
 #### Certificate Installation
 The image comes pre-installed with a startup script which provides a mechanism to extend the CA certificates which should be trusted.
 
-#### Database Check and Create Script
-The image comes pre-installed with the `check-create-pgdb.sh` script that enables consumers of this image to define a PostgreSQL database that will be created during startup of the consuming container. The script will also check if the database already exists and if so will not attempt to create it.
+### Pre-Installed Utility Scripts
 
-The database details are configured by passing the following environment variables to the container:
+#### Database Check and Create Script
+The image comes pre-installed with the `/scripts/check-create-pgdb.sh` script that enables consumers of this image to define a PostgreSQL database that will be created during startup of the consuming container. The script will also check if the database already exists and if so will not attempt to create it.
+
+In order to utilise this script you need to call the script via a command and pass an environment variable prefix argument e.g. `/scripts/check-create-pgdb.sh ENV_PREFIX_`
+
+The database details are configured by passing the following environment variables to the container. Note that the environment variable names contain the prefix value passed to the script as an argument:
 
 | **Environment Variable** |                                                       **Description**                                                      |
 |----------------------|------------------------------------------------------------------------------------------------------------------------|
-| DATABASE_NAME      | The name of the PostgreSQL database to be created.                                                                       |
-| DATABASE_HOST      | The host of the PostgreSQL instance where the database is to be created.                                                 |
-| DATABASE_PORT      | The port of the PostgreSQL instance where the database is to be created.                                                 |
-| DATABASE_USERNAME  | The PostgreSQL username to be used when creating the database.                                                           |
-| DATABASE_PASSWORD  | The PostgreSQL password to be used when creating the database.                                                           |
-| ENV_PREFIX             | This variable defines a custom prefix that is added to each of the above variable names. |
+| `ENV_PREFIX_`DATABASE_NAME      | The name of the PostgreSQL database to be created.                                                                       |
+| `ENV_PREFIX_`DATABASE_HOST      | The host of the PostgreSQL instance where the database is to be created.                                                 |
+| `ENV_PREFIX_`DATABASE_PORT      | The port of the PostgreSQL instance where the database is to be created.                                                 |
+| `ENV_PREFIX_`DATABASE_USERNAME  | The PostgreSQL username to be used when creating the database.                                                           |
+| `ENV_PREFIX_`DATABASE_PASSWORD  | The PostgreSQL password to be used when creating the database.                                                           |
 
-**Note:** If you do not wish to utilise the create database functionality do not provide any of the listed Environment Variables and the script will not attempt to create a database.
 

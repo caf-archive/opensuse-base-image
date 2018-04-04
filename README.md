@@ -18,19 +18,20 @@ The image comes pre-installed with a startup script which provides a mechanism t
 
 ### Pre-Installed Utility Scripts
 
-#### Database Check and Create Script
-The image comes pre-installed with the `/scripts/check-create-pgdb.sh` script that enables consumers of this image to define a PostgreSQL database that will be created during startup of the consuming container. The script will also check if the database already exists and if so will not attempt to create it.
+#### Database Creation Script
+The image comes pre-installed with a utility script which can be used to check if a PostgreSQL database exists and to create it if it does not.
 
-In order to utilise this script you need to call the script via a command and pass an environment variable prefix argument e.g. `/scripts/check-create-pgdb.sh ENV_PREFIX_`
+When the script is called it must be passed an environment variable prefix for the service:
 
-The database details are configured by passing the following environment variables to the container. Note that the environment variable names contain the prefix value passed to the script as an argument:
+    /scripts/check-create-pgdb.sh SERVICE_
 
-| **Environment Variable** |                                                       **Description**                                                      |
-|----------------------|------------------------------------------------------------------------------------------------------------------------|
-| `ENV_PREFIX_`DATABASE_NAME      | The name of the PostgreSQL database to be created.                                                                       |
-| `ENV_PREFIX_`DATABASE_HOST      | The host of the PostgreSQL instance where the database is to be created.                                                 |
-| `ENV_PREFIX_`DATABASE_PORT      | The port of the PostgreSQL instance where the database is to be created.                                                 |
-| `ENV_PREFIX_`DATABASE_USERNAME  | The PostgreSQL username to be used when creating the database.                                                           |
-| `ENV_PREFIX_`DATABASE_PASSWORD  | The PostgreSQL password to be used when creating the database.                                                           |
+The script then reads the database details from a set of environment variables with the specified prefix:
 
-
+| **Environment Variable**    |                                          **Description**                                               |
+|-----------------------------|--------------------------------------------------------------------------------------------------------|
+| `SERVICE_`DATABASE_HOST     | The host name of the machine on which the PostgreSQL server is running.                                |
+| `SERVICE_`DATABASE_PORT     | The TCP port on which the PostgreSQL server is listening for connections.                              |
+| `SERVICE_`DATABASE_USERNAME | The username to use when establishing the connection to the PostgreSQL server.                         |
+| `SERVICE_`DATABASE_PASSWORD | The password to use when establishing the connection to the PostgreSQL server.                         |
+| `SERVICE_`DATABASE_APPNAME  | The application name that PostgreSQL should associate with the connection for logging and monitoring.  |
+| `SERVICE_`DATABASE_NAME     | The name of the PostgreSQL database to be created.                                                     |

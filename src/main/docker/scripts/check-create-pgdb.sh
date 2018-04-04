@@ -77,27 +77,27 @@ function check_psql {
 function check_variables {
   local -i missingVar=0
 
-  if [ -z $database_name ] ; then
+  if [ -z "$database_name" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_NAME")" not defined"
     missingVar+=1
   fi
 
-  if [ -z $datasource_host ] ; then
+  if [ -z "$datasource_host" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_HOST")" not defined"
     missingVar+=1
   fi
 
-  if [ -z $datasource_port ] ; then
+  if [ -z "$datasource_port" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_PORT")" not defined"
     missingVar+=1
   fi
 
-  if [ -z $datasource_user ] ; then
+  if [ -z "$datasource_user" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_USERNAME")" not defined"
     missingVar+=1
   fi
 
-  if [ -z $datasource_password ] ; then
+  if [ -z "$datasource_password" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_PASSWORD")" not defined"
     missingVar+=1
   fi

@@ -48,19 +48,19 @@ varName="$ENV_PREFIX"DATABASE_NAME
 database_name=$(echo ${!varName})
 
 varName="$ENV_PREFIX"DATABASE_HOST
-datasource_host=$(echo ${!varName})
+database_host=$(echo ${!varName})
 
 varName="$ENV_PREFIX"DATABASE_PORT
-datasource_port=$(echo ${!varName})
+database_port=$(echo ${!varName})
 
 varName="$ENV_PREFIX"DATABASE_USERNAME
-datasource_user=$(echo ${!varName})
+database_username=$(echo ${!varName})
 
 varName="$ENV_PREFIX"DATABASE_PASSWORD
-datasource_password=$(echo ${!varName})
+database_password=$(echo ${!varName})
 
 varName="$ENV_PREFIX"DATABASE_APPNAME
-datasource_appname=$(echo ${!varName})
+database_appname=$(echo ${!varName})
 
 # ----------Function Section-----------#
 function check_psql {
@@ -85,27 +85,27 @@ function check_variables {
     missingVar+=1
   fi
 
-  if [ -z "$datasource_host" ] ; then
+  if [ -z "$database_host" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_HOST")" not defined"
     missingVar+=1
   fi
 
-  if [ -z "$datasource_port" ] ; then
+  if [ -z "$database_port" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_PORT")" not defined"
     missingVar+=1
   fi
 
-  if [ -z "$datasource_user" ] ; then
+  if [ -z "$database_username" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_USERNAME")" not defined"
     missingVar+=1
   fi
 
-  if [ -z "$datasource_password" ] ; then
+  if [ -z "$database_password" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_PASSWORD")" not defined"
     missingVar+=1
   fi
 
-  if [ -z "$datasource_appname" ] ; then
+  if [ -z "$database_appname" ] ; then
     echo "ERROR: Mandatory variable "$(echo $ENV_PREFIX"DATABASE_APPNAME")" not defined"
     missingVar+=1
   fi
@@ -121,10 +121,10 @@ function check_db_exist {
 
 # Need to set password for run
 # Sending psql errors to file, using quiet grep to search for valid result
- if  PGPASSWORD="$datasource_password" \
-   PGAPPNAME="$datasource_appname" psql --username="$datasource_user" \
-   --host="$datasource_host" \
-   --port="$datasource_port" \
+ if  PGPASSWORD="$database_password" \
+   PGAPPNAME="$database_appname" psql --username="$database_username" \
+   --host="$database_host" \
+   --port="$database_port" \
    --variable database_name="$database_name" \
    --tuples-only \
    2>$tmpErr <<EOF | grep -q 1
@@ -149,10 +149,10 @@ function create_db {
 # Need to set password for run
 # Sending psql errors to file, stdout to NULL
 # postgres will auto-lowercase database names unless they are quoted
-  if  PGPASSWORD="$datasource_password" \
-   PGAPPNAME="$datasource_appname" psql --username="$datasource_user" \
-   --host="$datasource_host" \
-   --port="$datasource_port" \
+  if  PGPASSWORD="$database_password" \
+   PGAPPNAME="$database_appname" psql --username="$database_username" \
+   --host="$database_host" \
+   --port="$database_port" \
    --variable database_name="$database_name" \
    >/dev/null 2>$tmpErr <<EOF
 CREATE DATABASE :"database_name";

@@ -16,7 +16,7 @@
 
 FROM opensuse:latest
 
-# Update the OS packages and install cURL
+# Update the OS packages, install cURL and postgreSQL client
 RUN zypper -n refresh && \
     zypper -n update && \
     zypper -n install curl postgresql

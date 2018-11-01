@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM opensuse:latest
+FROM opensuse/leap:42.3
 
 # Update the OS packages, install cURL and postgreSQL client
 RUN zypper -n refresh && \

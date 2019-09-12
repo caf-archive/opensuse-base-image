@@ -5,6 +5,6 @@ ${version-number}
 
 #### New Features
 
-- [SCMOD-7472](https://portal.digitalsafe.net/browse/SCMOD-7472): The startup scripts logging format updated to use standard pattern as mentioned in [caf-logging](https://github.com/CAFapi/caf-logging).
+- [SCMOD-7472](https://portal.digitalsafe.net/browse/SCMOD-7472): The startup scripts logging format updated to use standard pattern as specified in [caf-logging](https://github.com/CAFapi/caf-logging).
 
 #### Known Issues

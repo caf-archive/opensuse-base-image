@@ -16,9 +16,8 @@
 #
 
 # Create a convenience function for logging
-processId = $BASHPID;
 log() {
-    echo "[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $processId).??? INFO -            -   ] ${0##*/}: $@"
+    echo "[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $$).??? INFO -            -   ] ${0##*/}: $@"
 }
 
 # Run the executable scripts that are in the drop-in folder

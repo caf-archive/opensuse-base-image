@@ -26,7 +26,7 @@ log "Running startup scripts..."
 for script in $(dirname "$0")/startup.d/*; do
     if [ -x "$script" ]; then
         log "Running ${script##*/}..."
-        "$script" |& sed -ure "s/^warning:/WARN:/I; /^(info|error|warn|debug|trace):/I!s/^/info: /; s/^([^:]*): ?(.*)$/[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $BASHPID).??? \U\1\E -            -   ] ${script##*/}: \2/I"
+        "$script" |& sed -ure "s/^warning:/WARN:/I; /^(info|error|warn|debug|trace):/I!s/^/info: /; s/^([^:]*): ?(.*)$/[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $BASHPID).??? \U\1\E -            -   ] ${script##*/}: \2/"
     fi
 done
 

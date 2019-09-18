@@ -29,7 +29,7 @@ for script in $(dirname "$0")/startup.d/*; do
         "$script" |& sed -ure "
             s/^warning:/WARN:/I;
             /^(info|error|warn|debug|trace):/I!s/^/info: /;
-            s/^(\w{0,4}):/\1 :/I;
+            s/^(\w{0,4}):/\1 :/;
             s/^([^:]*): ?(.*)$/[$(printf '%s' $currDateTime) #$(printf '%03X\n' $BASHPID).??? \U\1\E -            -   ] ${script##*/}: \2/"
     fi
 done

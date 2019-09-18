@@ -16,6 +16,9 @@
 
 FROM opensuse/leap:latest
 
+# Set the locale manually to a set inherited from the base image (defaults to POSIX)
+ENV LANG=en_US.utf8
+
 # Update the OS packages, install cURL and postgreSQL client
 RUN zypper -n refresh && \
     zypper -n update && \
@@ -28,7 +31,7 @@ ADD https://raw.githubusercontent.com/CAFapi/caf-common/v1.14.0/container-cert-s
 RUN chmod +x /startup/* /startup/startup.d/*
 
 # Add Tini
-ENV TINI_VERSION v0.16.1
+ENV TINI_VERSION v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]

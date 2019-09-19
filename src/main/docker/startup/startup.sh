@@ -17,7 +17,7 @@
 
 # Create a convenience function for logging
 log() {
-    echo "${0##*/}: $@"
+    echo "[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $$).??? INFO  -            -   ] ${0##*/}: $@"
 }
 
 # Run the executable scripts that are in the drop-in folder
@@ -25,7 +25,14 @@ log "Running startup scripts..."
 for script in $(dirname "$0")/startup.d/*; do
     if [ -x "$script" ]; then
         log "Running ${script##*/}..."
-        "$script" |& sed -ue "s/^/${script##*/}: /"
+        "$script" |& sed -ure '
+            s/^warning:/WARN:/I;
+            /^(info|error|warn|debug|trace):/I!s/^/info: /;
+            s/^(\w{0,4}):/\1 :/;
+            s/^([^:]*): ?(.*)$/\1:'"${script##*/}"': \2/;
+            s/"/"'"'"'"'"'"'"/g;
+            s/^([^:]*):(.*)$/echo "[$(date +%H:%M:%S.%3NZ) #'"$(printf '%03X\n' $BASHPID)"'.??? \U\1\E -            -   ] \2"/;
+            e'
     fi
 done
 

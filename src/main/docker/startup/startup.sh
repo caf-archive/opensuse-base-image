@@ -30,8 +30,8 @@ for script in $(dirname "$0")/startup.d/*; do
             /^(info|error|warn|debug|trace):/I!s/^/info: /;
             s/^(\w{0,4}):/\1 :/;
             s/^([^:]*): ?(.*)$/\1:'"${script##*/}"': \2/;
-            s/"/"'"'"'"'"'"'"/g;
-            s/^([^:]*):(.*)$/echo "[$(date +%H:%M:%S.%3NZ) #'"$(printf '%03X\n' $BASHPID)"'.??? \U\1\E -            -   ] \2"/;
+            s/'"'"'/'"'"'"'"'"'"'"'"'/g;
+            s/^([^:]*):(.*)$/echo "[$(date +%H:%M:%S.%3NZ)"'"'"' #'"$(printf '%03X\n' $BASHPID)"'.??? \U\1\E -            -   ] \2'"'"'/;
             e'
     fi
 done

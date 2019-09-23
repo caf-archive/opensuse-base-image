@@ -15,21 +15,16 @@
 # limitations under the License.
 #
 
-# Create a convenience function for logging
-log() {
-    echo "[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $$).??? INFO  -            -   ] ${0##*/}: $@"
-}
+logger="$1";
+logger_sed_escaped="${logger//\\/\\\\}";
+logger_sed_escaped="${logger_sed_escaped//\//\\/}";
+logger_sed_escaped="${logger_sed_escaped//&/\\&}";
 
-# Run the executable scripts that are in the drop-in folder
-log "Running startup scripts..."
-for script in $(dirname "$0")/startup.d/*; do
-    if [ -x "$script" ]; then
-        log "Running ${script##*/}..."
-        "$script" |& $(dirname "$0")/../scripts/caf-log-format.sh "${script##*/}"
-    fi
-done
-
-log "Startup scripts completed"
-
-# Execute the specified command
-exec "$@"
+exec sed -ure '
+    s/^warning:/WARN:/I;
+    /^(info|error|warn|debug|trace):/I!s/^/info: /;
+    s/^(\w{0,4}):/\1 :/;
+    s/^([^:]*): ?(.*)$/\1:'"${logger_sed_escaped}"': \2/;
+    s/'"'"'/'"'"'"'"'"'"'"'"'/g;
+    s/^([^:]*):(.*)$/\/bin\/echo "[$(date +%H:%M:%S.%3NZ)"'"'"' #'"$(printf '%03X\n' $BASHPID)"'.??? \U\1\E -            -   ] \2'"'"'/;
+    e';

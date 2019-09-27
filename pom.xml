@@ -23,7 +23,7 @@
 
     <groupId>com.github.cafapi</groupId>
     <artifactId>opensuse-base-image</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0-187</version>
     <packaging>pom</packaging>
 
     <name>openSUSE Base image</name>

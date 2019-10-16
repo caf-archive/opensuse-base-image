@@ -20,11 +20,18 @@ logger_sed_escaped="${logger//\\/\\\\}";
 logger_sed_escaped="${logger_sed_escaped//\//\\/}";
 logger_sed_escaped="${logger_sed_escaped//&/\\&}";
 
+process_id="$BASHPID";
+
+if [ "$2" ];
+then
+    process_id="$2"
+fi
+
 exec sed -ure '
     s/^warning:/WARN:/I;
     /^(info|error|warn|debug|trace):/I!s/^/info: /;
     s/^(\w{0,4}):/\1 :/;
     s/^([^:]*): ?(.*)$/\1:'"${logger_sed_escaped}"': \2/;
     s/'"'"'/'"'"'"'"'"'"'"'"'/g;
-    s/^([^:]*):(.*)$/\/bin\/echo "[$(date +%H:%M:%S.%3NZ)"'"'"' #'"$(printf '%03X\n' $BASHPID)"'.??? \U\1\E -            -   ] \2'"'"'/;
+    s/^([^:]*):(.*)$/\/bin\/echo "[$(date +%H:%M:%S.%3NZ)"'"'"' #'"$(printf '%03X\n' $process_id)"'.??? \U\1\E -            -   ] \2'"'"'/;
     e';

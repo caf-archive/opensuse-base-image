@@ -21,6 +21,7 @@ ENV LANG=en_US.utf8
 
 # Update the OS packages, install cURL and postgreSQL client
 RUN zypper -n refresh && \
+    zypper al permissions && \
     zypper -n update && \
     zypper -n install curl postgresql
 

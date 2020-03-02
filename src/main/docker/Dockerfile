@@ -40,6 +40,9 @@ ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
 COPY scripts /scripts
 RUN chmod +x /scripts/*
 
+# Compatibility with debian
+RUN ln -s /var/lib/ca-certificates/ca-bundle.pem /etc/ssl/certs/ca-certificates.crt
+
 # Tag the image
 ARG BUILD_NUMBER
 ARG BUILD_DATE

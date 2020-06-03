@@ -26,6 +26,13 @@ for script in $(dirname "$0")/startup.d/*; do
     if [ -x "$script" ]; then
         log "Running ${script##*/}..."
         "$script" |& $(dirname "$0")/../scripts/caf-log-format.sh "${script##*/}"
+        if [ ${PIPESTATUS[0]} -eq 0 ]
+        then
+            log "Successfully ran ${script##*/}"
+        else
+            log "Error running ${script##*/}"
+            exit ${PIPESTATUS[0]}
+        fi
     fi
 done
 

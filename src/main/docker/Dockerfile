@@ -14,7 +14,8 @@
 # limitations under the License.
 #
 
-FROM opensuse/leap:latest
+ARG DOCKER_HUB_PUBLIC=docker.io
+FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest
 
 # Set the locale manually to a set inherited from the base image (defaults to POSIX)
 ENV LANG=en_US.utf8

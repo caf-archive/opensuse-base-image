@@ -6,3 +6,6 @@ ${version-number}
 
 #### Known Issues
 - None
+
+#### Micro Focus Release Authorization
+- ITLS RTM Approval Id: 1821

@@ -78,9 +78,9 @@ This image runs as the default root user. This is because the root user has the 
    exec /usr/local/bin/gosu my-existing-user "$@"
    ```
 
-2. Install gosu and invoke the new `entrypoint.sh` script 
+2. Install [gosu](https://github.com/tianon/gosu/) and invoke the new `entrypoint.sh` script 
 
-   In the `Dockerfile` of the image deriving from this base image, install the `gosu` utility, and then override the `ENTRYPOINT` of the base image with a new `ENTRYPOINT` that will invoke `entrypoint.sh`:
+   In the `Dockerfile` of the image deriving from this base image, install the [gosu](https://github.com/tianon/gosu/) utility, and then override the `ENTRYPOINT` of the base image with a new `ENTRYPOINT` that will invoke `entrypoint.sh`:
 
    ```
    # Install gosu

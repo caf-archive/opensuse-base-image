@@ -38,3 +38,64 @@ The script then reads the database details from a set of environment variables w
 | `SERVICE_`DATABASE_PASSWORD | The password to use when establishing the connection to the PostgreSQL server.                         |
 | `SERVICE_`DATABASE_APPNAME  | The application name that PostgreSQL should associate with the connection for logging and monitoring.  |
 | `SERVICE_`DATABASE_NAME     | The name of the PostgreSQL database to be created.                                                     |
+
+### Changing the Image User
+This image runs as the default root user. This is because the root user has the appropriate privileges to run the startup scripts on container startup. However, you can change the user running within the image after the startup scripts have been run. The follow steps describe how to do this.
+
+1. Create a new `entrypoint.sh` script
+
+   Create a new script named `entrypoint.sh` that will:
+   - Call the original entrypoint to run the startup scripts. This step will be executed as the default root user, which is required.
+   - Add a new user 
+   - Run a supplied command (for example a `CMD` in the Dockerfile) as the new user:
+
+   ```
+   #!/bin/bash
+
+   set -e
+
+   # Call original entrypoint (as the default root user)
+   /tini -s /startup/startup.sh
+
+   # Add a new user.
+   useradd --shell /bin/bash --system --user-group --create-home my-new-user
+
+   # Run CMD in Dockerfile as the new user
+   exec /usr/local/bin/gosu my-new-user "$@"
+   ```
+
+   Alternatively, if there is a existing user you would like to use, just leave out the step to add a new user:
+
+   ```
+   #!/bin/bash
+
+   set -e
+
+   # Call original entrypoint
+   /tini -s /startup/startup.sh
+
+   # Run CMD in Dockerfile as the existing user
+   exec /usr/local/bin/gosu my-existing-user "$@"
+   ```
+
+2. Install gosu and invoke the new `entrypoint.sh` script 
+
+   In the `Dockerfile` of the image deriving from this base image, install the `gosu` utility, and then override the `ENTRYPOINT` of the base image with a new `ENTRYPOINT` that will invoke `entrypoint.sh`:
+
+   ```
+   # Install gosu
+   RUN    gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+      && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64" \
+      && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64.asc" \
+      && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+      && rm /usr/local/bin/gosu.asc \
+      && chmod +x /usr/local/bin/gosu
+
+   # Add and invoke entrypoint.sh
+   ADD ./entrypoint.sh /usr/local/bin/entrypoint.sh
+   RUN chmod +x /usr/local/bin/entrypoint.sh
+   ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+   
+   # The following CMD will be executed as the user defined in entrypoint.sh
+   CMD ["whoami"]  
+   ```

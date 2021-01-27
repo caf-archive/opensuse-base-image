@@ -40,7 +40,7 @@ The script then reads the database details from a set of environment variables w
 | `SERVICE_`DATABASE_NAME     | The name of the PostgreSQL database to be created.                                                     |
 
 ### Changing the Image User
-This image runs as the default root user. This is because the root user has the appropriate privileges to run the startup scripts on container startup. However, you can change the user running within the image after the startup scripts have been run. The follow steps describe how to do this.
+This image runs as the default root user. This is necessary as the root user will have the appropriate privileges to be able to run the startup scripts. However, you can change the user running within the image after the startup scripts have been run. The following steps describe how to do this.
 
 1. Create a new `entrypoint.sh` script
 

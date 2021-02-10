@@ -23,7 +23,8 @@ ENV LANG=en_US.utf8
 # Update the OS packages, install cURL and postgreSQL client
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install curl postgresql dejavu-fonts
+    zypper -n install curl postgresql dejavu-fonts && \
+    zypper -n clean --all
 
 # Add scripts to be executed during startup
 COPY startup /startup

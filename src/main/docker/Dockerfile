@@ -27,12 +27,20 @@ RUN zypper -n refresh && \
     zypper -n clean --all
 
 # Install gosu
-RUN    gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-    && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64" \
-    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64.asc" \
-    && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-    && rm /usr/local/bin/gosu.asc \
-    && chmod +x /usr/local/bin/gosu
+#RUN    gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+#    && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64" \
+#    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64.asc" \
+#    && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+#    && rm /usr/local/bin/gosu.asc \
+#    && chmod +x /usr/local/bin/gosu
+
+# Temp split out of RUN cmd to investigate jenkins build failures
+RUN gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
+RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64"
+RUN curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64.asc"
+RUN gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu
+RUN rm /usr/local/bin/gosu.asc
+RUN chmod +x /usr/local/bin/gosu
 
 # Add scripts to be executed during startup
 COPY startup /startup

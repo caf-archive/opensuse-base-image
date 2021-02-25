@@ -33,10 +33,7 @@ RUN zypper -n refresh && \
 #    && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 #    && rm /usr/local/bin/gosu.asc \
 #    && chmod +x /usr/local/bin/gosu
-ENV http_proxy=http://web-proxy.uk.softwaregrp.net:8080
-ENV https_proxy=http://web-proxy.uk.softwaregrp.net:8080
-ENV HTTP_PROXY=http://web-proxy.uk.softwaregrp.net:8080
-ENV HTTPS_PROXY=http://web-proxy.uk.softwaregrp.net:8080
+
 # Temp split out of RUN cmd to investigate jenkins build failures
 RUN gpg --batch --keyserver-options http_proxy=http://web-proxy.uk.softwaregrp.net:8080 --keyserver hkp://keys.openpgp.org:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
 RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64"

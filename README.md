@@ -14,7 +14,7 @@ This project builds an openSUSE-based image intended for use as a general servic
 ### Gosu
 [Gosu](https://github.com/tianon/gosu/) is pre-installed in the container. Gosu allows derived images to run commands as a specified user, rather than as the default user.  
 
-To use gosu, set the RUNAS_USER environment variable in the derived container's Dockerfile, prior to any `CMD` instruction, and that `CMD` instruction will then be run as the specified user:
+To use gosu, set the `RUNAS_USER` environment variable in the derived container's Dockerfile, prior to any `CMD` instruction, and that `CMD` instruction will then be run as the specified user:
 
 ```
 RUNAS_USER=my-user

@@ -27,7 +27,8 @@ RUN zypper -n refresh && \
     zypper -n clean --all
 
 # Install gosu
-RUN gpg --batch --keyserver-options http-proxy=http://web-proxy.uk.softwaregrp.net:8080 --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
+RUN gpg --batch --keyserver-options http-proxy=http://web-proxy.uk.softwaregrp.net:8080 --keyserver hkps://keys.openpgp.org \
+      --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
     curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64" && \
     curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64.asc" && \
     gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu && \

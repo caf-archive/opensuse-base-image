@@ -26,6 +26,15 @@ RUN zypper -n refresh && \
     zypper -n install curl postgresql dejavu-fonts && \
     zypper -n clean --all
 
+# Install gosu
+RUN gpg --batch --keyserver-options http-proxy=${env.HTTP_PROXY} --keyserver hkps://keys.openpgp.org \
+      --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
+    curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64" && \
+    curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64.asc" && \
+    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu && \
+    rm /usr/local/bin/gosu.asc && \
+    chmod +x /usr/local/bin/gosu
+
 # Add scripts to be executed during startup
 COPY startup /startup
 ADD https://raw.githubusercontent.com/CAFapi/caf-common/v1.19.0/container-cert-script/install-ca-cert.sh \

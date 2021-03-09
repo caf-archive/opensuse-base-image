@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2017-2020 Micro Focus or one of its affiliates.
+# Copyright 2017-2021 Micro Focus or one of its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,13 +36,4 @@ done
 
 log "Startup scripts completed"
 
-# If the RUNAS_USER environment variable is set, execute the specified command as that user.
-if [ -n "$RUNAS_USER" ]; then
-    log "The RUNAS_USER environment variable has been set with a user named ${RUNAS_USER}. \
-Subsequent commands will be run as this user. \
-Please note that this user is expected to already exist, and will not be created."
-    exec /usr/local/bin/gosu $RUNAS_USER "$@"
-else
-    log "The RUNAS_USER environment variable is not set, subsequent commands will be run as the default user."
-    exec "$@"
-fi
+exec "$@"

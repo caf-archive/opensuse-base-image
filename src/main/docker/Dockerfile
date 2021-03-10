@@ -23,19 +23,16 @@ ENV LANG=en_US.utf8
 # Update the OS packages, install cURL, postgreSQL client and dejavu-fonts
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install curl postgresql dejavu-fonts && \
+    zypper -n install curl postgresql dejavu-fonts sudo && \
     zypper -n clean --all
-
-RUN chmod a+rwx /etc/pki/trust/anchors && \
-    chmod -R a+rwx /var/lib/ca-certificates && \
-    chmod -R a+rw /etc/ssl
 
 # Add scripts to be executed during startup
 COPY startup /startup
 ADD https://raw.githubusercontent.com/CAFapi/caf-common/SCMOD-12755/container-cert-script/install-ca-cert.sh \
     /startup/startup.d/install-ca-cert-base.sh
-RUN chmod +rx /startup/* /startup/startup.d/* && \
-    mkdir -p /tmp/ssl && chmod a+rwx /tmp/ssl
+RUN chmod -R +rx /startup/* /startup/startup.d/* && \
+    groupadd CAF
+COPY caf /etc/sudoers.d/caf
 
 # Add Tini
 ENV TINI_VERSION v0.18.0

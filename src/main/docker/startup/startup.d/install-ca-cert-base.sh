@@ -41,4 +41,3 @@ then
 else
     echo "Not installing CA Certificate."
 fi
-

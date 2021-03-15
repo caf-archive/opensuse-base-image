@@ -28,9 +28,8 @@ RUN zypper -n refresh && \
 
 # Add scripts to be executed during startup
 COPY startup /startup
-COPY cert-scripts/install_ca_cert.sh /startup/startup.d/install_ca_cert-base.sh
 RUN chmod -R +rx /startup/* /startup/startup.d/*
-COPY permissions/caf /etc/sudoers.d/caf
+COPY sudoers.d/install-ca-cert-base /etc/sudoers.d/install-ca-cert-base
 
 # Add Tini
 ENV TINI_VERSION v0.18.0

@@ -1,1 +1,0 @@
- ALL ALL=(ALL) NOPASSWD: /bin/cp * /etc/pki/trust/anchors*, /usr/sbin/update-ca-certificates

@@ -36,4 +36,5 @@ done
 
 log "Startup scripts completed"
 
+# Execute the specified command
 exec "$@"

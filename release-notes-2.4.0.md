@@ -8,4 +8,3 @@ ${version-number}
   built on this image to run as arbitrary users.
 
 #### Known Issues
-- None

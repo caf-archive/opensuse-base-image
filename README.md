@@ -1,4 +1,4 @@
-# openSUSE Base imagexxxx
+# openSUSE Base imagexxxxoo
 
 This project builds an openSUSE-based image intended for use as a general service base image.
 

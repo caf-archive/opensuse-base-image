@@ -28,7 +28,7 @@ Any executable scripts added to the `/startup/startup.d/` directory will be auto
 
 ### Pre-Installed Startup Scripts
 
-#### Certificate Installation
+#### Certificate Installationxx
 The image comes pre-installed with a startup script which provides a mechanism to extend the CA certificates which should be trusted.
 
 ### Pre-Installed Utility Scripts

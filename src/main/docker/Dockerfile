@@ -14,11 +14,12 @@
 # limitations under the License.
 #
 
+ARG DOCKER_HUB_PUBLIC=docker.io
+
 #
 # Preliminary image to prepare the gosu package since opensuse leap 15.3
 # no longer contains the required dirmngr package.
 #
-ARG DOCKER_HUB_PUBLIC=docker.io
 FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest as builder
 
 # Update the OS packages with dirmngr and curl to enable gosu install

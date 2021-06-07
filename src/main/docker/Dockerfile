@@ -15,15 +15,12 @@
 #
 
 ARG DOCKER_HUB_PUBLIC=docker.io
-FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest
+FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest as builder
 
-# Set the locale manually to a set inherited from the base image (defaults to POSIX)
-ENV LANG=en_US.utf8
-
-# Update the OS packages, install cURL, postgreSQL client and dejavu-fonts
+# Update the OS packages with dirmngr and curl to enable gosu install
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install dirmngr curl postgresql dejavu-fonts && \
+    zypper -n install dirmngr curl && \
     zypper -n clean --all
 
 # Install gosu
@@ -31,9 +28,23 @@ RUN gpg --batch --keyserver-options http-proxy=${env.HTTP_PROXY} --keyserver hkp
       --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
     curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64" && \
     curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64.asc" && \
-    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu && \
-    rm /usr/local/bin/gosu.asc && \
-    chmod +x /usr/local/bin/gosu
+    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu
+
+ARG DOCKER_HUB_PUBLIC
+FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest
+
+# Set the locale manually to a set inherited from the base image (defaults to POSIX)
+ENV LANG=en_US.utf8
+
+# Update the OS packages, install postgreSQL client and dejavu-fonts
+RUN zypper -n refresh && \
+    zypper -n update && \
+    zypper -n install postgresql dejavu-fonts && \
+    zypper -n clean --all
+
+# Copy gosu
+COPY --from=builder /usr/local/bin/gosu /usr/local/bin/gosu
+RUN chmod +x /usr/local/bin/gosu
 
 # Add scripts to be executed during startup
 COPY startup /startup

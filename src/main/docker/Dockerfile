@@ -23,7 +23,7 @@ ENV LANG=en_US.utf8
 # Update the OS packages, install cURL, postgreSQL client and dejavu-fonts
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install curl postgresql dejavu-fonts && \
+    zypper -n install dirmngr curl postgresql dejavu-fonts && \
     zypper -n clean --all
 
 # Install gosu

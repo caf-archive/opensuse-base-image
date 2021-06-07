@@ -14,21 +14,28 @@
 # limitations under the License.
 #
 
+# Docker registry
 ARG DOCKER_HUB_PUBLIC=docker.io
 
 #
 # Preliminary image to prepare the gosu package since opensuse leap 15.3
 # no longer contains the required dirmngr package.
 #
-FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest as builder
+FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest AS builder
 
-# Update the OS packages with dirmngr and curl to enable gosu install
+# Set the locale manually to a set inherited from the base image (defaults to POSIX)
+ENV LANG=en_US.utf8
+
+# Update the OS packages, install cURL, postgreSQL client and dejavu-fonts
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install dirmngr curl && \
+    zypper -n install curl postgresql dejavu-fonts && \
     zypper -n clean --all
 
-# Install gosu
+# Install dirmngr to enable gosu verification
+RUN zypper -n install dirmngr
+
+# Download and verify gosu
 RUN gpg --batch --keyserver-options http-proxy=${env.HTTP_PROXY} --keyserver hkps://keys.openpgp.org \
       --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
     curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64" && \

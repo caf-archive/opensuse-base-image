@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
+#
+# Preliminary image to prepare the gosu package since opensuse leap 15.3
+# no longer contains the required dirmngr package.
+#
 ARG DOCKER_HUB_PUBLIC=docker.io
 FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest as builder
 
@@ -28,9 +32,12 @@ RUN gpg --batch --keyserver-options http-proxy=${env.HTTP_PROXY} --keyserver hkp
       --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
     curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64" && \
     curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64.asc" && \
-    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu
+    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu && \
+    chmod +x /usr/local/bin/gosu
 
-ARG DOCKER_HUB_PUBLIC
+#
+# The actual image definition
+#
 FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest
 
 # Set the locale manually to a set inherited from the base image (defaults to POSIX)
@@ -44,7 +51,6 @@ RUN zypper -n refresh && \
 
 # Copy gosu
 COPY --from=builder /usr/local/bin/gosu /usr/local/bin/gosu
-RUN chmod +x /usr/local/bin/gosu
 
 # Add scripts to be executed during startup
 COPY startup /startup

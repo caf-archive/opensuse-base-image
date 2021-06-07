@@ -36,10 +36,10 @@ FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest
 # Set the locale manually to a set inherited from the base image (defaults to POSIX)
 ENV LANG=en_US.utf8
 
-# Update the OS packages, install postgreSQL client and dejavu-fonts
+# Update the OS packages, install cURL, postgreSQL client and dejavu-fonts
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install postgresql dejavu-fonts && \
+    zypper -n install curl postgresql dejavu-fonts && \
     zypper -n clean --all
 
 # Copy gosu

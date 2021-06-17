@@ -36,8 +36,8 @@ error() {
 #     ABC_PASSWORD=mypassword
 export_file_based_secrets() {
     env | while IFS= read -r env_var; do
-        env_var_name=${env_var%%=*}
-        env_var_value=${env_var#*=}
+        local env_var_name=${env_var%%=*}
+        local env_var_value=${env_var#*=}
         if  [[ ${env_var_name} == *_FILE ]] ;
         then
             local env_var_name_without_file_suffix=${env_var_name%_FILE}

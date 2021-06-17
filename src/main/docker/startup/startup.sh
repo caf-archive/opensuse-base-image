@@ -20,6 +20,9 @@ log() {
     echo "[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $$).??? INFO  -            -   ] ${0##*/}: $@"
 }
 
+# Export file based secrets
+exec $(dirname "$0")/../scripts/export-file-based-secrets.sh
+
 # Run the executable scripts that are in the drop-in folder
 log "Running startup scripts..."
 for script in $(dirname "$0")/startup.d/*; do

@@ -58,7 +58,6 @@ $env_var_name_without_file_suffix using the contents of ${env_var_value} as the 
                     error "Failed to export environment variable $env_var_name_without_file_suffix"
                     exit 1
                 fi
-                env
             else 
                 error "Failed to export the environment variable $env_var_name_without_file_suffix, file $env_var_value does not exist"
                 exit 1

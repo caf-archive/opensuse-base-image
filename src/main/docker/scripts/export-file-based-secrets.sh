@@ -15,6 +15,11 @@
 # limitations under the License.
 #
 
+# A function for logging in the caf logging format.
+log() {
+    echo "$@" |& $(dirname "$0")/../scripts/caf-log-format.sh "export-file-based-secrets.sh"
+}
+
 # A function for exporting file-based secrets.
 #
 # For example, for each environment variable ending in the _FILE suffix:
@@ -25,34 +30,34 @@
 #
 #     ABC_PASSWORD=mypassword
 export_file_based_secrets() {
-    env -0 | while IFS='=' read -r -d '' env_var_name env_var_value; do
+    while IFS='=' read -r -d '' env_var_name env_var_value; do
         if  [[ ${env_var_name} == *_FILE ]] ;
         then
             local env_var_name_without_file_suffix=${env_var_name%_FILE}
             if [ "${!env_var_name:-}" ] && [ "${!env_var_name_without_file_suffix:-}" ]; then
-                echo "ERROR: Both $env_var_name and $env_var_name_without_file_suffix are set (but are exclusive)"
+                log "ERROR: Both $env_var_name and $env_var_name_without_file_suffix are set (but are exclusive)"
                 exit 1
             fi            
-            echo "INFO: Found environment variable ending with the _FILE suffix: $env_var_name=$env_var_value, attempting to read the \
+            log "INFO: Found environment variable ending with the _FILE suffix: $env_var_name=$env_var_value, attempting to read the \
 contents of $env_var_value..."
             if [ -e "$env_var_value" ]; then
                 local file_contents=$(<${env_var_value})
-                echo "INFO: Successfully read contents of ${env_var_value}, exporting environment variable \
+                log "INFO: Successfully read contents of ${env_var_value}, exporting environment variable \
 $env_var_name_without_file_suffix using the contents of ${env_var_value} as the value..."
                 if export "$env_var_name_without_file_suffix"="$file_contents" ; then
-                    echo "INFO: Successfully exported environment variable $env_var_name_without_file_suffix"
+                    log "INFO: Successfully exported environment variable $env_var_name_without_file_suffix"
                     unset "$env_var_name"
                 else
-                    echo "ERROR: Failed to export environment variable $env_var_name_without_file_suffix"
+                    log "ERROR: Failed to export environment variable $env_var_name_without_file_suffix"
                     exit 1
                 fi
             else 
-                echo "ERROR: Failed to export the environment variable $env_var_name_without_file_suffix, file $env_var_value does not \
+                log "ERROR: Failed to export the environment variable $env_var_name_without_file_suffix, file $env_var_value does not \
 exist"
                 exit 1
             fi
         fi 
-    done
+    done < <(env -0)
 }
 
 export_file_based_secrets

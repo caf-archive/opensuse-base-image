@@ -22,7 +22,7 @@ log() {
 
 # Export file based secrets
 log "Running export-file-based-secrets.sh..."
-$(dirname "$0")/../scripts/export-file-based-secrets.sh |& $(dirname "$0")/../scripts/caf-log-format.sh "export-file-based-secrets.sh"
+source $(dirname "$0")/../scripts/export-file-based-secrets.sh
 export_file_based_secrets_status=${PIPESTATUS[0]}
 if [ $export_file_based_secrets_status -ne 0 ]; then
     echo "ERROR: Error running export-file-based-secrets.sh" |& $(dirname "$0")/../scripts/caf-log-format.sh "startup.sh"

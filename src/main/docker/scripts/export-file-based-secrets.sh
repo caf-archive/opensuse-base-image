@@ -15,17 +15,7 @@
 # limitations under the License.
 #
 
-# Create a convenience function for info logging.
-info() {
-    echo "[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $$).??? INFO  -            -   ] ${0##*/}: $@"
-}
-
-# Create a convenience function for error logging.
-error() {
-    echo "[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $$).??? ERROR  -            -   ] ${0##*/}: $@"
-}
-
-# Create a function for exporting file-based secrets.
+# A function for exporting file-based secrets.
 #
 # For example, for each environment variable ending in the _FILE suffix:
 #
@@ -35,31 +25,30 @@ error() {
 #
 #     ABC_PASSWORD=mypassword
 export_file_based_secrets() {
-    env | while IFS= read -r env_var; do
-        local env_var_name=${env_var%%=*}
-        local env_var_value=${env_var#*=}
+    env -0 | while IFS='=' read -r -d '' env_var_name env_var_value; do
         if  [[ ${env_var_name} == *_FILE ]] ;
         then
             local env_var_name_without_file_suffix=${env_var_name%_FILE}
             if [ "${!env_var_name:-}" ] && [ "${!env_var_name_without_file_suffix:-}" ]; then
-                error "Both $env_var_name and $env_var_name_without_file_suffix are set (but are exclusive)"
+                echo "ERROR: Both $env_var_name and $env_var_name_without_file_suffix are set (but are exclusive)"
                 exit 1
             fi            
-            info "Found environment variable ending with the _FILE suffix: $env_var_name=$env_var_value, attempting to read the contents \
-of $env_var_value..."
+            echo "INFO: Found environment variable ending with the _FILE suffix: $env_var_name=$env_var_value, attempting to read the \
+contents of $env_var_value..."
             if [ -e "$env_var_value" ]; then
                 local file_contents=$(<${env_var_value})
-                info "Successfully read contents of ${env_var_value}, exporting environment variable \
+                echo "INFO: Successfully read contents of ${env_var_value}, exporting environment variable \
 $env_var_name_without_file_suffix using the contents of ${env_var_value} as the value..."
                 if export "$env_var_name_without_file_suffix"="$file_contents" ; then
-                    info "Successfully exported environment variable $env_var_name_without_file_suffix"
+                    echo "INFO: Successfully exported environment variable $env_var_name_without_file_suffix"
                     unset "$env_var_name"
                 else
-                    error "Failed to export environment variable $env_var_name_without_file_suffix"
+                    echo "ERROR: Failed to export environment variable $env_var_name_without_file_suffix"
                     exit 1
                 fi
             else 
-                error "Failed to export the environment variable $env_var_name_without_file_suffix, file $env_var_value does not exist"
+                echo "ERROR: Failed to export the environment variable $env_var_name_without_file_suffix, file $env_var_value does not \
+exist"
                 exit 1
             fi
         fi 

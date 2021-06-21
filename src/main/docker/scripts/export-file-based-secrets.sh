@@ -17,7 +17,7 @@
 
 # A function for logging in the caf logging format.
 log() {
-    echo "$@" |& $(dirname "$0")/../scripts/caf-log-format.sh "export-file-based-secrets.sh"
+    echo "$@" |& $(dirname "$0")/../scripts/caf-log-format.sh "${0##*/}"
 }
 
 # A function for exporting file-based secrets.
@@ -42,8 +42,6 @@ export_file_based_secrets() {
 contents of $env_var_value..."
             if [ -e "$env_var_value" ]; then
                 local file_contents=$(<${env_var_value})
-                log "INFO: Successfully read contents of ${env_var_value}, exporting environment variable \
-$env_var_name_without_file_suffix using the contents of ${env_var_value} as the value..."
                 if export "$env_var_name_without_file_suffix"="$file_contents" ; then
                     log "INFO: Successfully exported environment variable $env_var_name_without_file_suffix"
                     unset "$env_var_name"
@@ -52,8 +50,7 @@ $env_var_name_without_file_suffix using the contents of ${env_var_value} as the 
                     exit 1
                 fi
             else 
-                log "ERROR: Failed to export the environment variable $env_var_name_without_file_suffix, file $env_var_value does not \
-exist"
+                log "ERROR: Failed to export environment variable $env_var_name_without_file_suffix, file $env_var_value does not exist"
                 exit 1
             fi
         fi 

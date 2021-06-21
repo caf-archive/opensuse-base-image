@@ -28,7 +28,6 @@ if [ $export_file_based_secrets_status -ne 0 ]; then
     echo "ERROR: Error running export-file-based-secrets.sh" |& $(dirname "$0")/../scripts/caf-log-format.sh "startup.sh"
     exit $export_file_based_secrets_status
 fi
-log "export-file-based-secrets.sh completed"
 
 # Run the executable scripts that are in the drop-in folder
 log "Running startup scripts..."

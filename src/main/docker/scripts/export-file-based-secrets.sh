@@ -16,8 +16,8 @@
 #
 
 # A function for logging in the caf logging format.
-log() {
-    echo "$@" |& $(dirname "$0")/../scripts/caf-log-format.sh "${0##*/}"
+caf_log() {
+    echo "$@" |& $(dirname "$0")/../scripts/caf-log-format.sh "export-file-based-secrets.sh"
 }
 
 # A function for exporting file-based secrets.
@@ -35,26 +35,26 @@ export_file_based_secrets() {
         then
             local env_var_name_without_file_suffix=${env_var_name%_FILE}
             if [ "${!env_var_name:-}" ] && [ "${!env_var_name_without_file_suffix:-}" ]; then
-                log "ERROR: Both $env_var_name and $env_var_name_without_file_suffix are set (but are exclusive)"
+                caf_log "ERROR: Both $env_var_name and $env_var_name_without_file_suffix are set (but are exclusive)"
                 exit 1
             fi            
-            log "INFO: Found environment variable ending with the _FILE suffix: $env_var_name=$env_var_value, attempting to read the \
+            caf_log "INFO: Found environment variable ending with the _FILE suffix: $env_var_name=$env_var_value, attempting to read \
 contents of $env_var_value..."
             if [ -e "$env_var_value" ]; then
                 local file_contents=$(<${env_var_value})
                 if export "$env_var_name_without_file_suffix"="$file_contents" ; then
-                    log "INFO: Successfully exported environment variable $env_var_name_without_file_suffix"
+                    caf_log "INFO: Successfully exported environment variable $env_var_name_without_file_suffix"
                     unset "$env_var_name"
                 else
-                    log "ERROR: Failed to export environment variable $env_var_name_without_file_suffix"
+                    caf_log "ERROR: Failed to export environment variable $env_var_name_without_file_suffix"
                     exit 1
                 fi
             else 
-                log "ERROR: Failed to export environment variable $env_var_name_without_file_suffix, file $env_var_value does not exist"
+                caf_log "ERROR: Failed to export env variable $env_var_name_without_file_suffix, file $env_var_value does not exist"
                 exit 1
             fi
         fi 
     done < <(env -0)
 }
-
 export_file_based_secrets
+unset -f caf_log # Don't export the caf_log function when this script is sourced

@@ -38,8 +38,7 @@ export_file_based_secrets() {
                 caf_log "ERROR: Both $env_var_name and $env_var_name_without_file_suffix are set (but are exclusive)"
                 exit 1
             fi            
-            caf_log "INFO: Found environment variable ending with the _FILE suffix: $env_var_name=$env_var_value, attempting to read \
-contents of $env_var_value..."
+            caf_log "INFO: Reading ${env_var_name} (${env_var_value})..."
             if [ -e "$env_var_value" ]; then
                 local file_contents=$(<${env_var_value})
                 if export "$env_var_name_without_file_suffix"="$file_contents" ; then

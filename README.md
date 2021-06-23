@@ -44,6 +44,7 @@ the script will read the contents of /var/somefile.txt (for example 'mypassword'
 ```
 ABC_PASSWORD=mypassword
 ```
+This feature is disabled by default. To enable it, ensure a `USE_FILE_BASED_SECRETS` environment variable is present, with a value of `true`, for example, `USE_FILE_BASED_SECRETS=true`.
 
 ### Pre-Installed Utility Scripts
 

@@ -11,7 +11,8 @@ The release notes for openSUSE Leap 15.3 can be found [here](https://doc.opensus
   environment variables ending with the _FILE prefix and setting the environment variable base name to the contents of the file. For
   example, given this environment variable ending in the _FILE suffix: `ABC_PASSWORD_FILE=/var/somefile.txt`, the script will read the
   contents of /var/somefile.txt (for example 'mypassword'), and export an environment variable named ABC_PASSWORD:
-  `ABC_PASSWORD=mypassword`
+  `ABC_PASSWORD=mypassword`. This feature is disabled by default. To enable it, ensure a `USE_FILE_BASED_SECRETS` environment variable
+  is present, with a value of `true`, for example, `USE_FILE_BASED_SECRETS=true`.
 
 #### Known Issues
 - None

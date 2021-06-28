@@ -29,11 +29,8 @@ ENV LANG=en_US.utf8
 # Update the OS packages, install cURL, postgreSQL client and dejavu-fonts
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install curl postgresql dejavu-fonts && \
+    zypper -n install curl && \
     zypper -n clean --all
-
-# Install dirmngr to enable gosu verification
-RUN zypper -n install dirmngr
 
 # Download and verify gosu
 RUN gpg --batch --keyserver-options http-proxy=${env.HTTP_PROXY} --keyserver hkps://keys.openpgp.org \

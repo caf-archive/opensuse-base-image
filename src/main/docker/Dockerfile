@@ -26,7 +26,7 @@ FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest AS builder
 # Set the locale manually to a set inherited from the base image (defaults to POSIX)
 ENV LANG=en_US.utf8
 
-# Update the OS packages, install cURL, postgreSQL client and dejavu-fonts
+# Update the OS packages and install cURL
 RUN zypper -n refresh && \
     zypper -n update && \
     zypper -n install curl && \

@@ -72,6 +72,8 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
 
+ENV SCMOD14972 Test
+
 # Add other useful scripts
 COPY scripts /scripts
 RUN chmod +x /scripts/*

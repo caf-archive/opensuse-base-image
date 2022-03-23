@@ -148,7 +148,7 @@ EOF
 
 function create_db {
 # Need to set password for run
-# Sending psql errors to file, stdout to NULL
+# Sending psql errors to file, stderr to NULL
 # postgres will auto-lowercase database names unless they are quoted
   if  PGPASSWORD="$database_password" \
    PGAPPNAME="$database_appname" psql --username="$database_username" \

@@ -36,7 +36,7 @@ log "Running startup scripts..."
 for script in $(dirname "$0")/startup.d/*; do
     if [ -x "$script" ]; then
         log "Running ${script##*/}..."
-        "$script" |& $(dirname "$0")/../scripts/caf-log-format.sh "${script##*/}"
+        "$script" |& $(dirname "$0")/../scripts/caf-log-format.sh "${script##*/}" 1>&2
         status=${PIPESTATUS[0]}
         if [ $status -ne 0 ]; then
             log "Error running ${script##*/}"

@@ -17,7 +17,7 @@
 
 # Create a convenience function for logging
 log() {
-    echo "[$(date +%H:%M:%S.%3NZ) #$(printf '%03X\n' $$).??? INFO  -            -   ] ${0##*/}: $@"
+    echo "[$(date +%F\ %H:%M:%S.%3NZ) #$(printf '%03X\n' $$).??? INFO  -            -   ] ${0##*/}: $@"
 }
 
 # Export file based secrets

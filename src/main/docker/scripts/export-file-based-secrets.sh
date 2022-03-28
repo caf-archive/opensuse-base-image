@@ -17,7 +17,7 @@
 
 # A function for logging in the caf logging format.
 caf_log() {
-    echo "$@" |& $(dirname "$0")/../scripts/caf-log-format.sh "export-file-based-secrets.sh"
+    echo "$@" |& $(dirname "$0")/../scripts/caf-log-format.sh "export-file-based-secrets.sh" 1>&2
 }
 
 # A function for exporting file-based secrets.

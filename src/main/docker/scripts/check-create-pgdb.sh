@@ -18,4 +18,4 @@
 set -o pipefail
 
 exec $(dirname "$0")/check-create-pgdb-impl.sh "$@" |&
-        $(dirname "$0")/caf-log-format.sh "check-create-pgdb.sh"
+        $(dirname "$0")/caf-log-format.sh "check-create-pgdb.sh" 1>&2

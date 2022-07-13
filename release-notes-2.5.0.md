@@ -1,5 +1,3 @@
-!not-ready-for-release!
-
 #### Version Number
 ${version-number}
 
@@ -9,3 +7,4 @@ The release notes for openSUSE Leap 15.4 can be found [here](https://doc.opensus
 - US478076: Tini has been upgraded to [v0.19.0](https://github.com/krallin/tini/releases/tag/v0.19.0).
 
 #### Known Issues
+- None

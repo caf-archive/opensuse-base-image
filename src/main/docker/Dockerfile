@@ -72,6 +72,11 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
 
+# Install crypto-policies-scripts and disable weaker security algorithms
+RUN zypper -n install crypto-policies-scripts && \
+    update-crypto-policies --set FUTURE && \
+	zypper -n remove -u crypto-policies-scripts
+
 # Add other useful scripts
 COPY scripts /scripts
 RUN chmod +x /scripts/*

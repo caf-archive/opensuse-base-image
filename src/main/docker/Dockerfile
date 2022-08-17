@@ -55,8 +55,7 @@ ENV LANG=en_US.utf8
 # Install crypto-policies-scripts and disable weaker security algorithms
 RUN zypper -n refresh && \
     zypper -n update && \
-    zypper -n install curl postgresql dejavu-fonts && \
-    zypper -n install crypto-policies-scripts && \
+    zypper -n install curl postgresql dejavu-fonts crypto-policies-scripts && \
     update-crypto-policies --set FUTURE && \
     zypper -n remove -u crypto-policies-scripts && \
     zypper -n clean --all

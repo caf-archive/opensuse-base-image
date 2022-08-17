@@ -52,9 +52,13 @@ FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest
 ENV LANG=en_US.utf8
 
 # Update the OS packages, install cURL, postgreSQL client and dejavu-fonts
+# Install crypto-policies-scripts and disable weaker security algorithms
 RUN zypper -n refresh && \
     zypper -n update && \
     zypper -n install curl postgresql dejavu-fonts && \
+    zypper -n install crypto-policies-scripts && \
+    update-crypto-policies --set FUTURE && \
+    zypper -n remove -u crypto-policies-scripts && \
     zypper -n clean --all
 
 # Copy gosu
@@ -71,11 +75,6 @@ ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
-
-# Install crypto-policies-scripts and disable weaker security algorithms
-RUN zypper -n install crypto-policies-scripts && \
-    update-crypto-policies --set FUTURE && \
-    zypper -n remove -u crypto-policies-scripts
 
 # Add other useful scripts
 COPY scripts /scripts

@@ -4,6 +4,6 @@
 ${version-number}
 
 #### New Features
-- US369215: Updated system wide crypto-policies to disable weaker security algorithms. Refer: https://en.opensuse.org/SDB:Crypto-policies
+- US369215: System wide crypto-policies set to `FUTURE` to disable weaker security algorithms. Refer: https://en.opensuse.org/SDB:Crypto-policies
 
 #### Known Issues

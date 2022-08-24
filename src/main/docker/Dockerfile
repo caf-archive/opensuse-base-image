@@ -51,12 +51,15 @@ FROM ${DOCKER_HUB_PUBLIC}/opensuse/leap:latest
 # Set the locale manually to a set inherited from the base image (defaults to POSIX)
 ENV LANG=en_US.utf8
 
+# Copy custom crypto-policy file
+COPY DISABLE-CBC.pmod /etc/crypto-policies/policies/modules
+
 # Update the OS packages, install cURL, postgreSQL client and dejavu-fonts
 # Install crypto-policies-scripts and disable weaker security algorithms
 RUN zypper -n refresh && \
     zypper -n update && \
     zypper -n install curl postgresql dejavu-fonts crypto-policies-scripts && \
-    update-crypto-policies --set FUTURE && \
+    update-crypto-policies --set DEFAULT:DISABLE-CBC && \
     zypper -n remove -u crypto-policies-scripts && \
     zypper -n clean --all
 

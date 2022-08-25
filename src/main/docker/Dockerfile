@@ -60,7 +60,8 @@ RUN zypper -n refresh && \
     zypper -n update && \
     zypper -n install curl postgresql dejavu-fonts crypto-policies-scripts && \
     update-crypto-policies --set DEFAULT:DISABLE-CBC && \
-    sed -rie '/^jdk.tls.disabledAlgorithms=/s/$/, TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256/' /etc/crypto-policies/back-ends/java.config && \
+    sed -rie /^jdk.tls.disabledAlgorithms=/s/$/, TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256/' \
+    /etc/crypto-policies/back-ends/java.config && \
     zypper -n remove -u crypto-policies-scripts && \
     zypper -n clean --all
 

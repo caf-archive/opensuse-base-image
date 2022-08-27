@@ -73,7 +73,7 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.26.1</version>
+                <version>0.40.2</version>
                 <executions>
                     <execution>
                         <id>docker-build</id>
@@ -96,6 +96,12 @@
                         <image>
                             <name>${dockerCafImagePrefix}opensuse-base${dockerProjectVersion}</name>
                             <build>
+                                <buildx>
+                                    <platforms>
+                                        <platform>linux/amd64</platform>
+                                        <platform>linux/arm64</platform>
+                                    </platforms>
+                                </buildx>
                                 <dockerFileDir>.</dockerFileDir>
                                 <args>
                                     <!-- Enable internet access -->

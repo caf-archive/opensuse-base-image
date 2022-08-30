@@ -1,5 +1,3 @@
-!not-ready-for-release!
-
 #### Version Number
 ${version-number}
 
@@ -8,3 +6,4 @@ ${version-number}
 - Updated the version of gosu to [1.14](https://github.com/tianon/gosu/releases/tag/1.14).
 
 #### Known Issues
+- None

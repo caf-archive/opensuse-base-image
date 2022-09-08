@@ -94,13 +94,14 @@
                     <autoPull>always</autoPull>
                     <images>
                         <image>
-                            <name>${dockerCafImagePrefix}opensuse-base${dockerProjectVersion}</name>
+                            <name>armie.local/opensuse-base</name>
                             <build>
                                 <buildx>
                                     <platforms>
                                         <platform>linux/amd64</platform>
                                         <platform>linux/arm64</platform>
                                     </platforms>
+                                    <configFile>~/buildx.cfg</configFile>
                                 </buildx>
                                 <dockerFileDir>.</dockerFileDir>
                                 <args>

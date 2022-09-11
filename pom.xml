@@ -94,7 +94,7 @@
                     <autoPull>always</autoPull>
                     <images>
                         <image>
-                            <name>armie.local/opensuse-base</name>
+                            <name>armie.lan/opensuse-base</name>
                             <build>
                                 <buildx>
                                     <platforms>

@@ -59,7 +59,7 @@
     </developers>
 
     <properties>
-        <copyrightYear>2022</copyrightYear>
+        <copyrightYear>2023</copyrightYear>
         <maven.install.skip>true</maven.install.skip>
         <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
         <dockerHubOrganization>cafapi</dockerHubOrganization>

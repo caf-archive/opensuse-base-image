@@ -45,6 +45,7 @@ RUN zypper -n refresh && \
 # Stage 2: Download and verify gosu
 #
 FROM stage1 AS stage2
+ARG TARGETARCH
 
 # Install dirmngr to enable gosu verification
 RUN zypper -n install dirmngr
@@ -52,8 +53,8 @@ RUN zypper -n install dirmngr
 # Download and verify gosu
 RUN gpg --batch --keyserver-options http-proxy=${env.HTTP_PROXY} --keyserver hkps://keys.openpgp.org \
         --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
-    curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.14/gosu-amd64" && \
-    curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.14/gosu-amd64.asc" && \
+    curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.14/gosu-${TARGETARCH}" && \
+    curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.14/gosu-${TARGETARCH}.asc" && \
     gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu && \
     chmod +x /usr/local/bin/gosu
 
@@ -61,6 +62,10 @@ RUN gpg --batch --keyserver-options http-proxy=${env.HTTP_PROXY} --keyserver hkp
 # Stage 3: The remainder of the actual image definition
 #
 FROM stage1
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+ARG TARGETARCH
+RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM $TARGETARCH" > /log
 
 # Copy gosu
 COPY --from=stage2 /usr/local/bin/gosu /usr/local/bin/gosu
@@ -73,7 +78,7 @@ RUN chmod +x /startup/* /startup/startup.d/*
 
 # Add Tini
 ENV TINI_VERSION v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${TARGETARCH} /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
 

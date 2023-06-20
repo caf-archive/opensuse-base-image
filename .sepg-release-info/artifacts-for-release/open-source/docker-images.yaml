@@ -1,0 +1,3 @@
+- dockerRepositoryId: cafapi/prereleases
+  imageName: opensuse-base
+  tag: "2.7.2-592"

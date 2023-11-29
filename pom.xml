@@ -102,6 +102,7 @@
                                     <http_proxy>${env.HTTP_PROXY}</http_proxy>
                                     <https_proxy>${env.HTTPS_PROXY}</https_proxy>
                                     <no_proxy>${env.NO_PROXY}</no_proxy>
+                                    <TINI_VERSION>v0.19.0</TINI_VERSION>
                                 </args>
                             </build>
                         </image>

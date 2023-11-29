@@ -72,9 +72,9 @@ ADD https://raw.githubusercontent.com/CAFapi/caf-common/v1.19.0/container-cert-s
 RUN chmod +x /startup/* /startup/startup.d/*
 
 # Add Tini
-ARG TINI_VERSION
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini/
-ADD https://github.com/krallin/tini/archive/refs/tags/${TINI_VERSION}.zip /tini/
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/$TINI_VERSION/tini /tini/
+ADD https://github.com/krallin/tini/archive/refs/tags/$TINI_VERSION.zip /tini/
 RUN chmod +x /tini
 #ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
 

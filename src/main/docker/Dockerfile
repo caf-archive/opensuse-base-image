@@ -73,10 +73,9 @@ RUN chmod +x /startup/* /startup/startup.d/*
 
 # Add Tini
 ENV TINI_VERSION v0.19.0
-ADD https://github.com/krallin/tini/releases/download/$TINI_VERSION/tini /tini/
-ADD https://github.com/krallin/tini/archive/refs/tags/$TINI_VERSION.zip /tini/
+ADD https://github.com/krallin/tini/releases/download/$TINI_VERSION/tini /tini
 RUN chmod +x /tini
-#ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
+ENTRYPOINT ["/tini", "--", "/startup/startup.sh"]
 
 # Add other useful scripts
 COPY scripts /scripts

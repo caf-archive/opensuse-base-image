@@ -47,7 +47,9 @@ RUN zypper -n refresh && \
 FROM stage1 AS stage2
 
 # Download and compile su-exec
-RUN zypper -n install gcc && \
+RUN zypper -n refresh && \
+    zypper -n update && \
+    zypper -n install gcc && \
     curl -o /usr/local/bin/su-exec.c -SL "https://raw.githubusercontent.com/ncopa/su-exec/master/su-exec.c" && \
     gcc -Wall /usr/local/bin/su-exec.c -o /usr/local/bin/su-exec && \
     chmod +x /usr/local/bin/su-exec && \

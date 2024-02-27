@@ -52,7 +52,7 @@ if [ -n "$RUNAS_USER" ]; then
     log "The RUNAS_USER environment variable has been set with a user named ${RUNAS_USER}. \
 Subsequent commands will be run as this user. \
 Please note that this user is expected to already exist, and will not be created."
-    exec /usr/local/bin/gosu $RUNAS_USER "$@"
+    exec /usr/local/bin/su-exec $RUNAS_USER "$@"
 else
     log "The RUNAS_USER environment variable is not set, subsequent commands will be run as the default user."
     exec "$@"

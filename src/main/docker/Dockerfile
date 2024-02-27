@@ -42,34 +42,33 @@ RUN zypper -n refresh && \
     zypper -n clean --all
 
 #
-# Stage 2: Download and verify gosu
+# Stage 2: Download and compile su-exec
 #
 FROM stage1 AS stage2
 
-# Install dirmngr to enable gosu verification
-RUN zypper -n install dirmngr
-
-# Download and verify gosu
-RUN gpg --batch --keyserver-options http-proxy=${env.HTTP_PROXY} --keyserver hkps://keys.openpgp.org \
-        --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
-    curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.17/gosu-amd64" && \
-    curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.17/gosu-amd64.asc" && \
-    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu && \
-    chmod +x /usr/local/bin/gosu
+# Download and compile su-exec
+RUN zypper -n install gcc && \
+    curl -o /usr/local/bin/su-exec.c -SL "https://raw.githubusercontent.com/ncopa/su-exec/master/su-exec.c" && \
+    gcc -Wall /usr/local/bin/su-exec.c -o /usr/local/bin/su-exec && \
+    chmod +x /usr/local/bin/su-exec && \
+    rm /usr/local/bin/su-exec.c
 
 #
 # Stage 3: The remainder of the actual image definition
 #
 FROM stage1
 
-# Copy gosu
-COPY --from=stage2 /usr/local/bin/gosu /usr/local/bin/gosu
+# Copy su-exec
+COPY --from=stage2 /usr/local/bin/su-exec /usr/local/bin/su-exec
 
 # Add scripts to be executed during startup
 COPY startup /startup
 ADD https://raw.githubusercontent.com/CAFapi/caf-common/v1.19.0/container-cert-script/install-ca-cert.sh \
     /startup/startup.d/install-ca-cert-base.sh
 RUN chmod +x /startup/* /startup/startup.d/*
+
+# Create symlink to support the use of 'gosu' command
+RUN ln -s /usr/local/bin/su-exec /usr/local/bin/gosu
 
 # Add Tini
 ENV TINI_VERSION v0.19.0

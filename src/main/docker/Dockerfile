@@ -47,10 +47,10 @@ RUN zypper -n refresh && \
 FROM stage1 AS stage2
 
 # Download and compile su-exec
-RUN zypper -n refresh && \
-    zypper -n update && \
-    zypper -n install gcc && \
+RUN zypper -n install gcc && \
     curl -o /usr/local/bin/su-exec.c -SL "https://raw.githubusercontent.com/ncopa/su-exec/master/su-exec.c" && \
+    echo 44d84566f8685273335fc44a82348eb71a6759792c9f0947f7a8be45dbac4d5685e7e6b59cdaf19bd13932f08bb383d9bd4aa37ff56ffac733695e55b5d76391 \
+    /usr/local/bin/su-exec.c | sha512sum -c - && \
     gcc -Wall /usr/local/bin/su-exec.c -o /usr/local/bin/su-exec && \
     chmod +x /usr/local/bin/su-exec && \
     rm /usr/local/bin/su-exec.c

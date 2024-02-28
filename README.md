@@ -11,10 +11,12 @@ This project builds an openSUSE-based image intended for use as a general servic
 ### DejaVu Fonts
 [DejaVu Fonts](https://dejavu-fonts.github.io/) is pre-installed in the container. The DejaVu fonts are a font family based on the Bitstream Vera Fonts. Its purpose is to provide a wider range of characters while maintaining the original look and feel through the process of collaborative development.
 
-### Gosu
-[Gosu](https://github.com/tianon/gosu/) is pre-installed in the container. Gosu allows derived images to run commands as a specified user, rather than as the default user.  
+### su-exec
+[su-exec](https://github.com/ncopa/su-exec) is pre-installed in the container. `su-exec` allows derived images to run commands as a specified user, rather than as the default user.  
 
-To use gosu, set the `RUNAS_USER` environment variable in the derived container's Dockerfile. Subsequent commands will then be run as the specified user:
+Note: `gosu` has been replaced with `su-exec`, however `gosu` command is still supported as a symlink to `su-exec`.
+
+To use `su-exec`, set the `RUNAS_USER` environment variable in the derived container's Dockerfile. Subsequent commands will then be run as the specified user:
 
 ```
 ENV RUNAS_USER=my-user
